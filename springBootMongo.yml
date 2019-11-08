@@ -2,20 +2,20 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
-    name: springboot
+    name: spring-petclinic
   name: spring-controller
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: springboot
+        name: spring-petclinic
     spec:
       containers:
-      - image: dockerhandson/spring-boot-mongo
-        name: springboot
+      - image: mjaballi/spring-petclinic
+        name: spring-petclinic
         ports:
-        - name: springboot
+        - name: spring-petclinic
           containerPort: 8080      
 ---
 # Node Port Service
@@ -23,56 +23,56 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    name: springboot
-  name: springboot
+    name: spring-petclinic
+  name: spring-petclinic
 spec:
   type: NodePort
   ports:
     - port: 8080
       targetPort: 8080
   selector:
-    name: springboot
+    name: spring-petclinic
 ---
-# Mongo host path rc
+# mysql host path rc
 apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
-    name: mongo
-  name: mongo-controller
+    name: mysql:5.7
+  name: mysql:5.7-controller
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: mongo
+        name: mysql:5.7
     spec:
       containers:
-      - image: mongo
-        name: mongo
+      - image: mysql:5.7
+        name: mysql:5.7
         ports:
-        - name: mongo
+        - name: mysql:5.7
           containerPort: 27017
           hostPort: 27017
         volumeMounts:
-        - name: mongo-persistent-storage
+        - name: mysql:5.7-persistent-storage
           mountPath: /data/db
       volumes:
-      - name: mongo-persistent-storage
+      - name: mysql:5.7-persistent-storage
         hostPath:
          path: /tmp/dbbackup
 ---
-# Mongo Node Port RC
+# mysql:5.7 Node Port RC
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    name: mongo
-  name: mongo
+    name: mysql:5.7
+  name: mysql:5.7
 spec:
   type: ClusterIP
   ports:
     - port: 27017
       targetPort: 27017
   selector:
-    name: mongo
+    name: mysql:5.7
