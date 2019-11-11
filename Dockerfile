@@ -14,4 +14,4 @@ WORKDIR $PROJECT_HOME
 
 CMD ["java", "-Dspring.data.mysql.uri=mysqldb://mysql:3306/spring-mysql","-Djava.security.egd=file:/dev/./urandom","-jar","./spring-petclinic.jar"]
 
-#CMD ["java", "-jar", "./spring-petclinic.jar"]
+
