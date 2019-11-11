@@ -12,11 +12,11 @@ spec:
         name: springboot
     spec:
       containers:
-      - image: dockerhandson/spring-boot-mongo
-        name: springboot
+      - image: mjaballi/spring-petclinic
+        name: spring-petclinic
         ports:
-        - name: springboot
-          containerPort: 8080      
+        - name: spring-petclinic
+          containerPort: 8080     
 ---
 # Node Port Service
 apiVersion: v1
