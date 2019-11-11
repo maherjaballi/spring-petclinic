@@ -13,9 +13,9 @@ spec:
     spec:
       containers:
       - image: mjaballi/spring-petclinic
-        name: spring-petclinic
+        name: springboot
         ports:
-        - name: spring-petclinic
+        - name: springboot
           containerPort: 8080     
 ---
 # Node Port Service
