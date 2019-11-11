@@ -1,9 +1,9 @@
 FROM openjdk:8-alpine
 
+RUN -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
+
 # Required for starting application up.
 RUN apk update && apk add /bin/sh
-
-RUN -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
 
 RUN mkdir -p /opt/app
 ENV PROJECT_HOME /opt/app
