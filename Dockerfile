@@ -10,6 +10,6 @@ COPY target/spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar $PROJECT_HOME/spring-petcl
 
 WORKDIR $PROJECT_HOME
 
-#CMD ["java", "-Dspring.data.mongodb.uri=mongodb://mongo:27017/spring-mongo","-Djava.security.egd=file:/dev/./urandom","-jar","./spring-petclinic.jar"]
+CMD ["java", "-Dspring.data.mysql.uri=mysqldb://mysql:27017/spring-mysql","-Djava.security.egd=file:/dev/./urandom","-jar","./spring-petclinic.jar"]
 
-CMD ["java", "-jar", "./spring-petclinic.jar"]
+#CMD ["java", "-jar", "./spring-petclinic.jar"]
