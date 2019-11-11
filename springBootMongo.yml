@@ -2,20 +2,20 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
-    name: springboot
+    name: springpetclinic
   name: spring-controller
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: springboot
+        name: springpetclinic
     spec:
       containers:
       - image: mjaballi/spring-petclinic
-        name: springboot
+        name: springpetclinic
         ports:
-        - name: springboot
+        - name: springpetclinic
           containerPort: 8080     
 ---
 # Node Port Service
@@ -23,56 +23,59 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    name: springboot
-  name: springboot
+    name: springpetclinic
+  name: springpetclinic
 spec:
   type: NodePort
   ports:
     - port: 8080
       targetPort: 8080
   selector:
-    name: springboot
+    name: springpetclinic
 ---
-# Mongo host path rc
+# more mysql-master-rc.yaml
 apiVersion: v1
 kind: ReplicationController
 metadata:
+  name: mysql-master
   labels:
-    name: mongo
-  name: mongo-controller
+    name: mysql-master
 spec:
   replicas: 1
+  selector:
+    name: mysql-master
   template:
     metadata:
       labels:
-        name: mongo
+        name: mysql-master
     spec:
       containers:
-      - image: mongo
-        name: mongo
-        ports:
-        - name: mongo
-          containerPort: 27017
-          hostPort: 27017
-        volumeMounts:
-        - name: mongo-persistent-storage
-          mountPath: /data/db
-      volumes:
-      - name: mongo-persistent-storage
-        hostPath:
-         path: /tmp/dbbackup
----
-# Mongo Node Port RC
+        - name: master
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+        #  env:
+       #     - name: MYSQL_ROOT_PASSWORD
+      #        value: "test"
+     #       - name: MYSQL_REPLICATION_USER
+    #          value: 'demo'
+   #         - name: MYSQL_REPLICATION_PASSWORD
+  #            value: 'demo'
+          environment:
+            - MYSQL_ROOT_PASSWORD=petclinic
+            - MYSQL_DATABASE=petclinic
+          volumes:
+            - "./conf.d:/etc/mysql/conf.d:ro"              
+# more mysql-master-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
+  name: mysql-master
   labels:
-    name: mongo
-  name: mongo
+    name: mysql-master
 spec:
-  type: ClusterIP
   ports:
-    - port: 27017
-      targetPort: 27017
+    - port: 3306
+      targetPort: 3306
   selector:
-    name: mongo
+      name: mysql-master
